@@ -57,15 +57,16 @@ begin
             wr_en(to_integer(unsigned(addr))) <= en and (not rd_wr);
         end process decoder;
 
-        synch: process(clk, rst) is
+        BANK: process(clk, rst) is
         begin
             if (rst = '1') then
                 REG_BANK <= (others => (others => '0'));
                 rd_data <= (others => '0');
-            elsif (rising_edge(clk))
+            elsif (rising_edge(clk)) then
+	
                 
                 for i in wr_en'range loop
-                    if wr_en(i) = '1' then
+                    if (wr_en(i) = '1') then
                         REG_BANK(i) <= wr_data;
                     end if;
                 end loop;
@@ -75,6 +76,6 @@ begin
                 end if;
 
             end if;
-        end process synch;
+        end process BANK;
 
 end architecture arc_top_ALU;

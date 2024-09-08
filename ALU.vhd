@@ -9,7 +9,7 @@ entity ALU is
     Port ( 
         A       : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         B       : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-        OPER    : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        OPER    : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
         EXECUTE : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         rst     : in  STD_LOGIC;
         clk     : in  STD_LOGIC;
@@ -29,7 +29,7 @@ begin
         if (rst = '1') then
             res <= (others => '0');
         elsif (rising_edge(clk)) then
-            res <= std_logic_vector(to_signed(res_int, res_value'length));
+            res <= std_logic_vector(to_signed(res_int, res'length));
         end if;
     end process synch;
 
@@ -59,7 +59,7 @@ begin
                     if (b_int /= 0) then
                         res_int <= a_int / b_int;
                     else
-                        res_int <= x"dead";
+                        res_int <= 16#dead#;
                     end if;
                 when others =>
                     res_int <= res_int;
