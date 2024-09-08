@@ -67,7 +67,7 @@ begin
 
     stim: process is
     begin
-
+        
         -- Let reset stay active for 3cc.
         rst <= '1';
         wait until rising_edge(clk);
@@ -80,6 +80,7 @@ begin
         wait until rising_edge(clk);
         
         test_loop: for i in TEST_RANGE loop
+            prev_res <= res_out; 
             addr <= "00"; -- Address of A
             wr_data <= std_logic_vector(to_signed(A(i), DATA_WIDTH)); -- Convert integer to std_logic_vector
             wait until rising_edge(clk);
@@ -117,6 +118,8 @@ begin
                             report "Div operation failed!" severity warning;
                     end if;
                 when others =>
+                    assert res_out = prev_res
+                            report "OTHERS operation failed!" severity warning;
                      
             end case;
 
