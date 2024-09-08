@@ -85,7 +85,7 @@ begin
         test_loop: for i in TEST'range loop
             prev_res <= res_out;
             addr <= "11"; -- Address of execute
-            wr_data <= (0 => '0'); -- Deassert execute
+            wr_data <= "00000000"; -- Deassert execute
             wait until rising_edge(clk);
              
             addr <= "00"; -- Address of A
@@ -98,9 +98,9 @@ begin
             wr_data <= op(i);
             wait until rising_edge(clk);
             addr <= "11"; -- Address of execute
-            wr_data <= (0 => '1'); -- Execute
+            wr_data <= "00000001"; -- Execute
             wait until rising_edge(clk);
-            wait until rising_edge(clk);
+            -- wait until rising_edge(clk);
             
             if(op(i) = zero) then
                 assert res_out = std_logic_vector(to_signed(0, DATA_WIDTH*2))
