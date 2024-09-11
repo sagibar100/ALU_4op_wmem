@@ -100,7 +100,8 @@ begin
             addr <= "11"; -- Address of execute
             wr_data <= "00000001"; -- Execute
             wait until rising_edge(clk);
-            -- wait until rising_edge(clk);
+            wait until rising_edge(clk);
+            wait until rising_edge(clk);
             
             if(op(i) = zero) then
                 assert res_out = std_logic_vector(to_signed(0, DATA_WIDTH*2))
@@ -129,6 +130,7 @@ begin
 
         end loop test_loop;
 
+        report "All tests passed!" severity note;
 
 
         wait; -- wait FOREVER!

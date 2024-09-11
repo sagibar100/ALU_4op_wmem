@@ -9,6 +9,10 @@ add wave -noupdate /tb_alu/wr_data
 add wave -noupdate /tb_alu/rd_data
 add wave -noupdate /tb_alu/res_out
 add wave -noupdate /tb_alu/prev_res
+add wave -noupdate /tb_alu/DUT/EXECUTE
+add wave -noupdate /tb_alu/DUT/OPER
+add wave -noupdate /tb_alu/DUT/B_DATA
+add wave -noupdate /tb_alu/DUT/A_DATA
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {0 ps} 0}
 quietly wave cursor active 0

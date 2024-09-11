@@ -45,6 +45,7 @@ begin
         port map (
             A       => A_DATA,
             B       => B_DATA,
+            OPER    => OPER,
             EXECUTE => EXECUTE,
             rst     => rst,
             clk     => clk,

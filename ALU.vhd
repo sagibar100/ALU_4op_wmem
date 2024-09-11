@@ -9,7 +9,7 @@ entity ALU is
     Port ( 
         A       : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         B       : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-        OPER    : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+        OPER    : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         EXECUTE : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         rst     : in  STD_LOGIC;
         clk     : in  STD_LOGIC;
@@ -21,6 +21,7 @@ end ALU;
 architecture arc_ALU of ALU is
 
     signal res_int : integer;
+    alias Sel_op is OPER(7 downto 0);
 
 begin
 
@@ -46,16 +47,16 @@ begin
             a_int := to_integer(signed(A));
             b_int := to_integer(signed(B));
 
-            case OPER(2 downto 0) is
-                when "000" =>
+            case Sel_op is
+                when "00000000" =>
                     res_int <= 0;
-                when "001" =>
+                when "00000001" =>
                     res_int <= a_int + b_int;
-                when "010" =>
+                when "00000010" =>
                     res_int <= a_int - b_int;
-                when "011" =>
+                when "00000011" =>
                     res_int <= a_int * b_int;
-                when "100" =>
+                when "00000100" =>
                     if (b_int /= 0) then
                         res_int <= a_int / b_int;
                     else
