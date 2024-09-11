@@ -37,9 +37,11 @@ begin
 
     calculations: process(rst, EXECUTE) is
         variable a_int, b_int : integer;
+        variable dead : std_logic_vector(res'range) := x"DEAD";
     begin
         if (rst = '1') then
             res_int <= 0;
+            dead := x"DEAD";
         elsif (EXECUTE(0) = '0') then
             res_int <= res_int;
         else
@@ -60,7 +62,7 @@ begin
                     if (b_int /= 0) then
                         res_int <= a_int / b_int;
                     else
-                        res_int <= 16#dead#;
+                        res_int <= to_integer(signed(dead));
                     end if;
                 when others =>
                     res_int <= res_int;

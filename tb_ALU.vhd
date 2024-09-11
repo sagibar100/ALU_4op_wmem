@@ -14,7 +14,7 @@ architecture arc_tb_ALU of tb_ALU is
     -- constant ADDR_WIDTH : integer := 2;
     constant DATA       : std_logic_vector(DATA_WIDTH -1 downto 0) := (others => '0');
     constant ADDRESS    : std_logic_vector(ADDR_WIDTH -1 downto 0) := (others => '0');
-    constant TEST       : std_logic_vector(0 to 9) := (others => '0');
+    constant TEST       : std_logic_vector(0 to 12) := (others => '0');
     
     type std_ctrl_array is array (natural range<>) of std_logic_vector(DATA'range);
     --array type with elements of std_logic_vector
@@ -32,7 +32,9 @@ architecture arc_tb_ALU of tb_ALU is
     constant junk0 : std_logic_vector(DATA'range) := "00000101";
     constant junk1 : std_logic_vector(DATA'range) := "00000110";
     constant junk2 : std_logic_vector(DATA'range) := "00000111";
-    constant junkA : std_logic_vector(DATA'range) := "11111111";   
+    constant junkA : std_logic_vector(DATA'range) := "11111111";
+    
+    constant dead : unsigned((DATA_WIDTH*2)-1 downto 0) := x"DEAD";
 
     signal clk,rst,rd_wr : std_logic := '1';
     signal addr: std_logic_vector(ADDRESS'range) := "00";
@@ -45,9 +47,9 @@ architecture arc_tb_ALU of tb_ALU is
 begin
 
     
-    A <= (1,2,6,8,6,8,9,0,10,-20);
-    B <= (1,2,0,4,6,20,3,5,-10,2);
-    op<=(zero,sum,div,mult,div,sub,div,mult,div,mult);
+    A <= (1,2,6,8,6,8,9,0,10,-20,7,8,9);
+    B <= (1,2,0,4,6,20,3,5,-10,2,5,4,-1);
+    op<=(zero,sum,div,mult,div,sub,div,mult,div,mult,junk0,sum,junk1);
 
     DUT: entity work.top_ALU
     Generic map (
@@ -117,7 +119,7 @@ begin
                     report "Mult operation failed!" severity warning;
             elsif(op(i) = div) then
                 if(B(i) = 0) then
-                    assert res_out = x"DEAD";
+                    assert res_out = std_logic_vector(dead)
                         report "Div operation failed!" severity warning;
                 else
                     assert res_out = std_logic_vector(to_signed(A(i) / B(i), DATA_WIDTH*2))
